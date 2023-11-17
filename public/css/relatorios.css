@@ -1,0 +1,107 @@
+.titulos-lista {
+    padding: 10px 0px;
+    display: grid;
+    grid-template-columns: 22.5% 22.5% 22.5% 22.5% 10%;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    background: white;
+    border:1px solid rgba(0,0,0,.125);
+}
+
+.titulos-lista div span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.item-titulo-lista {
+    text-align: center;
+    color:#42464D;
+
+}
+
+.selecionar-intervalo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-grupo label {
+    align-items: center;
+}
+
+.span-intervalo {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.relatorio {
+    padding: 10px 0px;
+    display: grid;
+    grid-template-columns: 22.5% 22.5% 22.5% 22.5% 10%;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    background: white;
+    border:1px solid rgba(0,0,0,.125);
+}
+
+.relatorio div {
+    padding: 0 10px;
+}
+
+.relatorio div span {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.relatorio:hover {
+    background-color: #E5E4E2;
+}
+
+.detalhes-evento {
+    display: grid;
+    grid-template-rows: 33% 33% auto;
+    grid-template-columns: auto;
+    row-gap: 10px;
+    background: white;
+    padding: 20px;
+}
+
+.span-first {
+    font-weight: bold;
+}
+
+.span-second {
+    font-weight: 500;
+}
+
+.linha-nomes {
+    display: flex;
+    flex-direction: row;
+}
+
+.titulo-linha-detalhes {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item-lista-detalhe {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.list-group-item-avisos {
+    display: grid;
+    grid-template-columns: 95% 5%;
+    padding: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+    margin-bottom: 5px;
+
+}

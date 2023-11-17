@@ -1,0 +1,74 @@
+<main class="main-cadastro">
+    <div class="container-cadastro">
+        <div class="title-cadastro"> Cadastrar </div>
+        <div class="content-cadastro">
+            <form action="/usuarios/cadastro/add" method="POST">
+                <div class="user-details-cadastro">
+                    <div class="input-box-cadastro">
+                        <span class="details">Nome:</span>
+                        <input type="text" placeholder="Digite seu nome completo..." name="nome">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Usuário:</span>
+                        <input type="text" placeholder="Digite seu nome de usuário..." name="usuario">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Email: </span>
+                        <input type="text" placeholder="Digite seu email..." name="email">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Senha: </span>
+                        <input type="password" placeholder="Digite a senha..." name="senha">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Confirme a senha: </span>
+                        <input type="password" placeholder="Confirme a senha..." name="conf_senha">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">CPF: </span>
+                        <input type="text" class="form-control" id="cpf" placeholder="Digite o CPF..." name="cpf">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Telefone: </span>
+                        <input type="text" class="form-control" id="telefone" placeholder="Digite o telefone..." name="telefone">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Endereço: </span>
+                        <input type="text" placeholder="Digite seu endereço..." name="endereco">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">CEP: </span>
+                        <input type="text" class="form-control" id="cep" placeholder="Digite o CEP..." name="cep">
+                    </div>
+                    <div class="input-box-cadastro">
+                        <span class="details">Cidade: </span>
+                        <input type="text" placeholder="Digite sua cidade..." name="cidade">
+                    </div>
+                </div>
+                <div class="buttons-cadastro">
+                    <button type="button" onclick="voltarPagina()" class="btn-voltar"><a href="/usuarios/login">Voltar</a></button>
+                    <button type="button" onclick="LimparCampos()" class="btn-limpar-campos">Limpar campos</button>
+                    <button type="submit" class="btn-cadastrar">Cadastrar</button>
+                </div>
+            </form>
+            {{#if erros.length}}
+            <div class="alert alert-danger" style="margin-top: 15px;">
+                <ul>
+                    {{#each erros}}
+                        <li>{{texto}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function () {
+    adicionarMascaraCPF('cpf');
+    adicionarMascaraTelefone('telefone');
+    adicionarMascaraCEP('cep');
+});
+
+</script>

@@ -1,0 +1,43 @@
+.perfil {
+    width: 100%;
+}
+
+.container-perfil {
+    box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+}
+
+.container-perfil h1 {
+    padding: 25px;
+    border-bottom: 1px solid rgb(194, 194, 194);
+}
+
+.container-perfil-infos {
+    margin-left: 15px;
+    border-left: 3px solid #02a7c8;
+}
+
+.container-perfil-infos p{
+    border-bottom: 1px solid rgb(220, 220, 220);
+    padding: 10px 20px;
+    margin: 0 0 5px 5px;
+}
+
+.container-btn-perfil {
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+    padding: 15px 20px 10px 20px;
+}
+
+.btn-perfil-titulo span{
+    font-size: 26px;
+    font-weight: bolder;
+}
+
+.eye-icon {
+    color: #000; 
+}

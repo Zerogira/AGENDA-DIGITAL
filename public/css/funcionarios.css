@@ -1,0 +1,179 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 86% 12%; 
+    gap: 28px;
+    height: 100%;
+    max-height: 100vh;
+}
+
+.col1 {
+    grid-column: 1;
+}
+
+.col2 {
+    grid-column: 2; 
+}
+
+.title-item {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.func-LE {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.func-LD {
+    padding: 30px 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.btns-painel-lateral {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.links-painel-lateral {
+    width: 100%;
+}
+
+.func-lista {
+    height: 100%;
+    border:none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: #E8E8E8;
+}
+
+.container-registros {
+    max-height: 743px;
+    overflow-y: auto; 
+}
+
+
+.titulo-funcionario div span{
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.funcionario {
+    padding: 10px 0px;
+    display: grid;
+    grid-template-columns: 40% 22.5% 22.5% 15%;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.funcionario div {
+    padding: 0 10px;
+}
+
+.funcionario div span {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.funcionario:hover {
+    background-color: #E5E4E2;
+}
+
+.funcionario-nome {
+    color: #42464D;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.funcionario-nome-titulo {
+    color: #42464D;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+
+.funcionario-telefone {
+    text-align: center;
+    color:#42464D;
+}
+
+.funcionario-disponibilidade {
+    text-align: center;
+    color:#42464D;
+}
+
+.funcionario-icones{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+}
+
+.funcionario-icones i{
+    border-left: 1px solid black;
+    justify-content: center;
+    padding: 5px 10px;
+}
+
+.detail-container {
+    display: flex;
+    align-items: center; 
+}
+
+.detail {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.detail:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: black;
+}
+
+.titulo-funcionario{
+    padding: 10px 0px;
+    display: grid;
+    grid-template-columns: 40% 22.5% 22.5% 15%;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.titulo-funcionario div {
+    text-align: center;
+    
+}
+
+.detalhes-conteudo {
+    grid-column: span 4; 
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    background: white;
+    padding: 20px;
+}
+
+.detalhes-conteudo span {
+    font-weight: bold;
+}
+
+.detalhes-conteudo span span {
+    font-weight: 500;
+}
+
+

@@ -1,0 +1,288 @@
+<div class="grid-container">
+    <div class="col1 func-LE">
+        <div class="title-item">
+            <span>BRINQUEDOS</span>
+            <div class="input-group col-4">
+                <input type="text" class="form-control" id="searchFuncionario" placeholder="Pesquise por nome">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" onclick="pesquisarFuncionario()">Pesquisar</button>
+                </div>
+            </div>
+        </div>
+            <ul class="list-group">
+                <li class="list-group-item titulo-funcionario">
+                    <div class="funcionario-nome-titulo" style="border-right: 1px solid;">
+                        <span>NOME</span>
+                    </div>
+                    <div class="funcionario-telefone" style="border-right: 1px solid;">
+                        <span>MARCA</span>
+                    </div>
+                    <div class="funcionario-disponibilidade" style="border-right: 1px solid;">
+                        <span>QUANTIDADE</span>
+                    </div>
+                </li>
+            </ul>
+        <div class="func-lista">
+            <div class="container-registros">
+                {{#each brinquedos}}
+                <div class="containerGeral">
+                    <li class="list-group-item funcionario">
+                    <div class="funcionario-nome" style="border-right: 1px solid;">
+                        <span>{{nome}}</span>
+                    </div>
+                    <div class="funcionario-telefone" style="border-right: 1px solid;">
+                        <span>{{marca}}</span>
+                    </div>
+                    <div class="funcionario-disponibilidade" style="border-right: 1px solid;">
+                        <span>{{quantidade}}</span>
+                    </div>
+                    <div class="funcionario-icones">
+                        <div class="detail-container">
+                            <span class="detail" onclick="exibirDetalhes(this)">detalhes</span>
+                        </div>
+                        <i class="fas fa-edit" data-toggle="modal" data-target="#editarModal"
+                        data-Brinquedo="{{json this}}" style="cursor: pointer;"></i>
+                        <i class="fas fa-trash" data-toggle="modal" data-target="#confirmarExclusaoModal"
+                        data-Brinquedo="{{json this}}" style="cursor: pointer;"></i>
+                    </div>
+                    </li>
+                    <div class="detalhes-conteudo" style="display: none;">
+                        <span>Marca: <span>{{marca}}</span></span>
+                        <span>Quantidade: <span>{{quantidade}}</span></span>
+                        <span>Status: <span>{{statusB}}</span></span>
+                        <span>Necessario funcionario: <span>{{necessFuncionario}}</span></span>
+                        <span>Id do Usuario: <span>{{usuarioId}}</span></span>
+                        <span>Descrição: <span>{{descricao}}</span></span>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col2 func-LD">
+        <a href="#" data-toggle="modal" data-target="#cadastroModal" class="links-painel-lateral"><button class="btn btn-primary btns-painel-lateral">ADICIONAR</button></a>
+    </div>
+</div>
+
+<!-- FUNCIONARIO MORAL PARA CADASTRO -->
+<div class="modal fade" id="cadastroModal" tabindex="-1" role="dialog" aria-labelledby="cadastroModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cadastroModalLabel">Novo Brinquedo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/aplication/brinquedos/novo" method="post">
+                    <div class="containerInput-login">
+                        <div class="input-box-login">
+                            <label for="nome" class="detailsL">Nome do brinquedo</label>
+                            <input type="text" class="form-control" id="nome" placeholder="Digite o nome do brinquedo.."
+                                name="nome" required>
+                        </div>
+                        <div class="input-box-login">
+                            <label for="marca" class="detailsL">Marca</label>
+                            <input type="text" class="form-control" id="marca" placeholder="Digite a marca..." name="marca"
+                                required>
+                        </div>
+                        <div class="input-box-login">
+                            <label for="quantidade" class="detailsL">Quantidade</label>
+                            <input type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade disponivel do produto..."
+                                name="quantidade" required>
+                        </div>
+                        <div class="input-box-login">
+                            <label for="descricao" class="detailsL">Descrição ou observação</label>
+                            <input type="text" class="form-control" id="descricao" placeholder="Digite a descrição sobre o produto..."
+                                name="descricao" required>
+                        </div>
+                        <div style="text-align: left; width:100%;margin-bottom:15px;">
+                            <label for="necessFuncionario" class="detailsL">Necessário funcionario obrigatorio?</label>
+                            <input type="checkbox" id="necessFuncionario" name="necessFuncionario">     
+                        </div>
+                        <div class="input-box-login">
+                            {{#each erros}}
+                            <div class="alert alert-danger">{{texto}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{!-- FORMULARIO MODAL PARA EDIÇÃO --}}
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Brinquedo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="fecharModal('editarModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/aplication/brinquedos/editar" method="post">
+                    <div class="containerInput-login">
+                        <div class="input-box-login">
+                            <label for="nome" class="detailsL">Nome do brinquedo</label>
+                            <input type="text" class="form-control" id="nome" placeholder="Digite o nome do brinquedo.."
+                                name="nome" required>
+                        </div>
+                        <div class="input-box-login">
+                            <label for="marca" class="detailsL">Marca</label>
+                            <input type="text" class="form-control" id="marca" placeholder="Digite a marca..." name="marca"
+                                required>
+                        </div>
+                        <div class="input-box-login">
+                            <label for="quantidade" class="detailsL">Quantidade</label>
+                            <input type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade disponivel do produto..."
+                                name="quantidade" required>
+                        </div>
+			            <div style="text-align: left; width:100%;margin-bottom:15px;">
+                            <label for="necessFuncionario" class="detailsL">Necessário funcionario obrigatorio?</label>
+                            <input type="checkbox" id="necessFuncionario" name="necessFuncionario">     
+                        </div>
+                        <div class="input-box-login">
+                            <label for="descricao" class="detailsL">Descrição</label>
+                            <input type="text" class="form-control" id="descricao" placeholder="Digite a descrição sobre o produto..."
+                                name="descricao" required>
+                        </div>
+                        <div class="input-box-login">
+                            <label for="statusB" class="detailsL">Status</label>
+                            <select class="form-control" id="statusB" name="statusB" required>
+                                <option value="DISPONIVEL">DISPONÍVEL</option>
+                                <option value="BLOQUEADO">BLOQUEADO</option>
+                            </select>
+                        </div>
+                        <div class="input-box-login">
+                            {{#each erros}}
+                            <div class="alert alert-danger">{{texto}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" id="id" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="confirmarExclusaoModal" tabindex="-1" role="dialog"
+    aria-labelledby="confirmarExclusaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmarExclusaoModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="fecharModal('confirmarExclusaoModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir o brinquedo <span id="BrinquedoNomeExclusao"></span>?</p>
+            </div>
+            <input type="hidden" name="id" id="exclusaoId" value="">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmarExclusaoBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const editIcons = document.querySelectorAll('.fas.fa-edit');
+    const editarModal = document.getElementById('editarModal');
+    const nomeInput = editarModal.querySelector('#nome');
+    const marcaInput = editarModal.querySelector('#marca');
+    const descricaoInput = editarModal.querySelector('#descricao');
+    const quantidadeInput = editarModal.querySelector('#quantidade');
+    const necessFuncionarioCheckBox = editarModal.querySelector('#necessFuncionario');
+    const brinquedoIdInput = editarModal.querySelector('#id');
+
+    editIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            const brinquedoData = JSON.parse(this.getAttribute('data-Brinquedo'));
+            console.log('Brinquedos data: ',brinquedoData)
+
+            brinquedoIdInput.value = brinquedoData.id;
+            nomeInput.value = brinquedoData.nome;
+            descricaoInput.value = brinquedoData.descricao;
+            marcaInput.value = brinquedoData.marca;
+            quantidadeInput.value = brinquedoData.quantidade;
+            necessFuncionarioCheckBox.checked = brinquedoData.necessFuncionario;
+            statusBInput.value = brinquedoData.statusB;
+
+            $('#editarModal').modal('show');
+        });
+    });
+
+    // DELETAR REGISTRO DE BRINQUEDOS
+    const trashIcons = document.querySelectorAll('.fas.fa-trash');
+    const confirmarExclusaoModal = document.getElementById('confirmarExclusaoModal');
+    const brinquedoNomeExclusao = document.getElementById('BrinquedoNomeExclusao');
+    const exclusaoIdInput = document.getElementById('exclusaoId');
+
+    trashIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            const brinquedoData = JSON.parse(this.getAttribute('data-Brinquedo'));
+            const brinquedoId = brinquedoData.id;
+            const brinquedoNome = brinquedoData.nome;
+
+            exclusaoIdInput.value = brinquedoId;
+            brinquedoNomeExclusao.textContent = brinquedoNome;
+
+            $('#confirmarExclusaoModal').modal('show');
+        });
+    });
+
+    // CONFIRMAR DELETE DE BRINQUEDO
+    const confirmarExclusaoBtn = document.getElementById('confirmarExclusaoBtn');
+
+    confirmarExclusaoBtn.addEventListener('click', async function () {
+        try {
+            const brinquedoId = exclusaoIdInput.value;
+
+            const response = await fetch(`/aplication/excluirbrinquedo/${brinquedoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                console.log('Brinquedo excluído com sucesso');
+                location.reload();
+            } else {
+                console.error('Erro ao excluir o Brinquedo');
+            }
+
+            $('#confirmarExclusaoModal').modal('hide');
+        } catch (error) {
+            console.error('Erro durante a exclusão:', error);
+        }
+    });
+
+function fecharModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        $(modal).modal('hide'); 
+    }
+}
+</script>

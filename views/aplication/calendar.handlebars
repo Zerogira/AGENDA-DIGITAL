@@ -1,0 +1,127 @@
+<main class="main-calendario">
+    <div class="div-calendario">
+    <section class="calendar-section">
+        <div id="calendar"></div>
+    </section>
+
+    <div class="event-list" id="event-list">
+        <div class="title-div-eventos">
+            Eventos
+            <input type="hidden" id="diaAtualInput" name="diaAtual" value="">
+        </div>
+        <ul class="list-calendario" id="event-list-ul">
+        
+        </ul>
+    </div>
+    </div>
+</main>
+
+<div class="modal fade" id="confirmarConclusaoModal" tabindex="-1" aria-labelledby="confirmarConclusaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="confirmarConclusaoModalLabel">Confirmar Conclusão</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal('confirmarConclusaoModal')">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Tem certeza de que deseja marcar este evento como concluído?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="confirmarConclusaoBtn">Confirmar</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmacaoSucessoModal" tabindex="-1" aria-labelledby="confirmacaoSucessoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="confirmacaoSucessoModalLabel">Sucesso!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            A ação foi realizada com sucesso.
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,list'
+        },
+        slotMinTime: '06:00:00',
+        slotMaxTime: '23:59:00',
+        locale: 'pt-br',
+        eventColor: '#3788d8',
+        eventTextColor: '#fff',
+        slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: false },
+        dayMaxEventRows: true, 
+        dayMaxEvents: 2, 
+        events: function(info, successCallback, failureCallback) {
+            carregarEventosDoServidor()
+                .then(eventosFormatados => {
+                    successCallback(eventosFormatados);
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar eventos do servidor:', error);
+                    failureCallback(error);
+                });
+        },
+        eventContent: function(arg) {
+            if (arg.view.type === 'dayGridMonth') {
+                return {
+                    html: '<div class="fc-content-custom">' + arg.event.title + '</div>'
+                };
+            } else {
+                return {
+                    html: '<div class="fc-content-custom">' + arg.event.title + ' ' + arg.timeText + '</div>'
+                };
+            }
+        },
+        dateClick: function(info) {
+            var dataClicada = info.date;
+            var dataFormatada = dataClicada.toISOString().split('T')[0];
+            carregarEventosDoDia(dataFormatada);
+        },
+        eventClick: function(info) {
+            carregarEventoParaLista(info.event);
+        },
+        eventMouseEnter: function (info) {
+            info.el.style.cursor = 'pointer'; 
+            info.el.style.borderColor = '#80aaff'; 
+        },
+
+        eventMouseLeave: function (info) {
+            info.el.style.borderColor = ''; 
+        },
+        height: '100%',
+        firstDay: 1,
+        nowIndicator: false,
+        showNonCurrentDates: false,
+        fixedWeekCount: false,
+    });
+    calendar.render();
+});
+
+
+
+$('#confirmacaoSucessoModal').on('show.bs.modal', function (event) {
+    $('#confirmacaoSucessoModal').on('shown.bs.modal', function (event) {
+        setTimeout(function(){
+            $('#confirmacaoSucessoModal').modal('hide');
+        }, 1000);
+    });
+});
+</script>

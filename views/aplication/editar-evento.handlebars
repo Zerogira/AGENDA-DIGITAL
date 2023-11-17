@@ -1,0 +1,277 @@
+<main class="main-cadastro">
+    <div class="container-agendar">
+        <h1>Editar Evento</h1>
+        <div class="container-componentes">
+        <section class="section-agendar">
+            <div class="titulo-agendar">
+                <h3>Informações do Evento</h3>
+            </div>
+            <div class="conteudo-agendar" style="padding: 10px;">
+                {{#each eventoPesquisado}}
+                <form action="/eventos/novo" method="POST">
+                <input type="hidden" id="eventoId" value="{{this.id}}">
+                    <div class="user-details-agendar">
+                        <div class="input-box-agendar">
+                            <label for="titulo">Título:</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" value="{{this.titulo}}" required>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="contato">Contato: </label>
+                            <input type="text" class="form-control" id="contato" name="contato" value="{{this.contato}}" required>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="dataInicio">Data Inicio:</label>
+                            <input type="date" class="form-control" id="dataInicio" name="dataInicio" value="{{this.dataInicio}}" required>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="dataFim">Data Fim:</label>
+                            <input type="date" class="form-control" id="dataFim" name="dataFim" value="{{this.dataFim}}" required>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="horarioInicio">Horário de Início:</label>
+                            <input type="time" class="form-control" id="horarioInicio" name="horarioInicio" value="{{this.horarioInicio}}" required>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="horarioFim">Horário de Término:</label>
+                            <input type="time" class="form-control" id="horarioFim" name="horarioFim" value="{{this.horarioFim}}" required>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="endereco">Endereço:</label>
+                            <input type="text" class="form-control" id="endereco" name="endereco" value="{{this.endereco}}">
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="cidade">Cidade:</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade" value="{{this.cidade}}" >
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="tipo">Tipo:</label>
+                            <select class="form-control" id="tipo" name="tipo" value="{{this.tipo}}">
+                                <option value="PARTICULAR">PARTICULAR</option>
+                                <option value="PARTICULAR FORA DA CIDADE">PARTICULAR FORA DA CIDADE</option>
+                                <option value="PREFEITURA">PREFEITURA</option>
+                                <option value="PREFEITURA FORA DA CIDADE">PREFEITURA FORA DA CIDADE</option>
+                            </select>
+                        </div>
+                        <div class="input-box-agendar">
+                            <label for="cidade">Observação: </label>
+                            <input type="text" class="form-control" id="observacao" name="observacao" value="{{this.observacao}}">
+                        </div>
+                    </div>
+                </form>
+                {{/each}}
+            </div>
+        </section>
+
+        <section class="section-agendar">
+            <div class="titulo-agendar">
+                <h3>Adicionar Brinquedos</h3>
+            </div>
+            <div class="conteudo-agendar">
+                <ul id="lista-conteudo-brinquedo" class="lista-conteudo">
+                    {{#each nomesBrinquedos}}
+                    <li class="item-lista">
+                        <div class="item-nome">
+                            <span class='span-b'>{{this.nome}}</span>
+                            <input type="hidden" class="necessFuncionario" value="{{this.necessFuncionario}}">
+                            <input type="hidden" class="idbrinquedo" value="{{this.id}}">
+                        </div>
+                        <div class="btn-qtn">
+                            <span id='quantSelecionado' class="quant"> {{this.quantidade}}</span>
+                        </div>
+                        <div class="excluir-componente" onclick="excluirComponente(this.parentNode)">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="botoes-agendar">
+                <button id="removerBrinquedos" class="btn-agendar">REMOVER TODOS</button>
+                <button type="button" class="btn-agendar" data-toggle="modal" data-target="#modalBrinquedos">ADICIONAR</button>
+            </div>
+        </section>
+
+        <section class="section-agendar">
+            <div class="titulo-agendar">
+                <h3>Adicionar Funcionarios</h3>
+            </div>
+            <div class="conteudo-agendar">
+                <ul id="lista-conteudo-funcionario" class="lista-conteudo">
+                {{#each nomesFuncionarios}}
+                    <li class="item-lista">
+                        <div class="item-nome">
+                            <span class='span-f'>{{this.nome}}</span>
+                            <input type="hidden" class="idfuncionario" value="{{this.id}}">
+                        </div>
+                        <div class="excluir-componente" onclick="excluirComponente(this.parentNode)">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </li>
+                {{/each}}
+                </ul>
+            </div>
+            <div class="botoes-agendar">
+                {{#if nomesBrinquedos.length}}
+                    <span>Minimo: <span id="minimo-funcionarios">{{nomesBrinquedos.[0].minimoFuncionario}}</span></span>
+                {{/if}}
+                <button id="removerFuncionarios" class="btn-agendar">REMOVER TODOS</button>
+                <button type="button" class="btn-agendar" data-toggle="modal" data-target="#modalFuncionarios">ADICIONAR</button>
+            </div>
+        </section>
+        </div>
+        <div class="botoes-enviar-agendar">
+            <button id="enviarEvento" class="btn-agendar">ENVIAR</button>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="modalBrinquedos" tabindex="-1" role="dialog" aria-labelledby="modalBrinquedosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalBrinquedosLabel">Lista de Brinquedos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
+                <ul class="list-group">
+                    {{#each brinquedos}}
+                    <li class="list-group-item">
+                        <div class="item-nome">
+                            <span id="spanNomeBrinquedo{{this.id}}" class="span-b">{{this.nome}}</span>
+                        </div>
+                        <div class="btn-qtn">
+                            <button class="none botoesMenor" onclick="diminuirQuantidade(this.nextElementSibling)">
+                                <i id="quantModal" class="fas fa-chevron-left"></i>
+                            </button>
+                            <input id="quantidade{{id}}" class="quant" value="1">
+                            <button class="none botoesMaior" onclick="aumentarQuantidade(this.previousElementSibling)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            </div>
+                        <div class="check-box-container">
+                            <input class="check-box" type="checkbox" value="" id="brinquedo{{this.id}}" data-brinquedo-id="{{this.id}}">
+                            <input type="hidden" id="necessFuncionario{{this.id}}" value="{{this.necessFuncionario}}">
+                            <input type="hidden" id="statusB{{this.id}}" value="{{this.statusB}}">
+                            <input type="hidden" id="quantDisponivel{{this.id}}" value="{{this.quantidade}}">
+                        </div>
+                    </li>
+                    {{/each}}
+                    <div class="input-box-login">
+                        {{#each erros}}
+                        <div class="alert alert-danger">{{texto}}</div>
+                        {{/each}}
+                    </div>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="adicionarBrinquedos()">Adicionar Selecionados</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalFuncionarios" tabindex="-1" role="dialog" aria-labelledby="modalFuncionariosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalFuncionariosLabel">Lista de Funcionários</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
+                <ul class="list-group">
+                    {{#each funcionarios}}
+                    <li class="list-group-item">
+                        <div class="item-nome-funcionario">
+                            <span id="spanNomeFuncionario{{this.id}}" class="span-f">{{this.nome}}</span>
+                        </div>
+                        <div class="item-disponibilidade">
+                            <span id="spanDisponibilidade{{this.id}}" class="span-f">{{this.disponibilidade}}</span>
+                        </div>
+                        <div class="check-box-container">
+                            <input class="check-box" type="checkbox" value="" id="funcionario{{this.id}}" data-funcionario-id="{{this.id}}">
+                            <input type="hidden" id="statusF{{this.id}}" value="{{this.statusB}}">
+                        </div>
+                    </li>
+                    {{/each}}
+                    <div class="input-box-login">
+                        {{#each erros}}
+                        <div class="alert alert-danger">{{texto}}</div>
+                        {{/each}}
+                    </div>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="adicionarFuncionarios()">Adicionar Selecionados</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalErro" tabindex="-1" role="dialog" aria-labelledby="modalErroLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalErroLabel">Erro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"
+                    onclick="fecharModal('modalErro')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="mensagemErro">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    onclick="fecharModal('modalErro')">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script id="disponibilidadeBrinquedos" data-disponibilidade="{{json disponibilidadeBrinquedos}}">
+
+    {{!-- var dataInicioInput = document.getElementById("dataInicio");
+    var dataFimInput = document.getElementById("dataFim");
+    var dataAtual = new Date();
+    var ano = dataAtual.getFullYear();
+    var mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
+    var dia = dataAtual.getDate().toString().padStart(2, '0');
+    var dataFormatada = `${ano}-${mes}-${dia}`;
+    dataInicioInput.value = dataFormatada;
+    dataFimInput.value = dataFormatada; --}}
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const removerTodosBrinquedosBtn = document.getElementById("removerBrinquedos");
+
+    removerTodosBrinquedosBtn.addEventListener("click", function () {
+        removerTodosBrinquedos();
+    });
+
+    const removerTodosFuncionariosBtn = document.getElementById("removerFuncionarios");
+    const listaFuncionarios = document.getElementById("lista-conteudo-funcionario");
+
+    removerTodosFuncionariosBtn.addEventListener("click", function () {
+        while (listaFuncionarios.firstChild) {
+        listaFuncionarios.removeChild(listaFuncionarios.firstChild);
+        }
+    });
+
+    const enviarEventoButton = document.getElementById("enviarEvento");
+    if (enviarEventoButton) {
+    enviarEventoButton.addEventListener("click", function () {
+        salvarEventoEditado();
+    });
+    }
+});
+
+
+</script>

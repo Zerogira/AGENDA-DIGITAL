@@ -1,0 +1,191 @@
+<div class="grid-container">
+    <div class="col1 func-LE">
+        <div class="title-item">
+            <span>GERAR RELATÓRIO</span>
+        </div>
+        <div class="selecionar-intervalo">
+            <div class="form-grupo">
+                <span for="data-inicio" class="span-intervalo">De:</span>
+                <input type="date" class="form-control" id="data-inicio" name="data-inicio">
+            </div>
+
+            <div class="form-grupo" >
+                <span for="data-fim" class="span-intervalo">Até:</span>
+                <input type="date" class="form-control" id="data-fim" name="data-fim">
+            </div>
+
+            <button class="btn btn-primary" id="pesquisar-btn" style="margin-left: 20px;">Pesquisar</button>
+        </div>
+
+        <div class="func-lista">
+
+        </div>
+    </div>
+
+    <div class="col2 func-LD">
+        <a href="#" data-toggle="modal" data-target="#cadastroModal" class="links-painel-lateral btn btn-danger btns-painel-lateral" style="color:black; font-weight: bolder">EXPORTAR PDF</a>
+
+        <a href="#" data-toggle="modal" data-target="#modalAvisos" class="links-painel-lateral btn btn-info btns-painel-lateral" style="color: black; font-weight: bolder">VER AVISOS</a>
+
+    </div>
+</div>
+
+<div class="modal fade" id="modalAvisos" tabindex="-1" role="dialog" aria-labelledby="modalAvisosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAvisosLabel">Lista de Avisos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
+                <!-- Conteúdo dos avisos aqui -->
+                <ul class="list-group">
+                    {{#each avisos}}
+                    <li class="list-group-item-avisos">
+                        <!-- Estrutura do aviso -->
+                        <span>{{this.titulo}}</span>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <!-- Adicione outros botões ou funcionalidades conforme necessário -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+let eventosFiltradosGlobal = [];
+
+$(document).ready(function() {
+    $('#pesquisar-btn').on('click', function() {
+        var dataInicioInput = $('#data-inicio').val();
+        var dataFimInput = $('#data-fim').val();
+        console.log('dataInicioInput: ', dataInicioInput);
+        console.log('dataFimInput: ', dataFimInput);
+
+        fetch('/api/eventos')
+        .then(response => response.json())
+        .then(data => {
+            // Filtra os eventos com base nas datas
+            const eventosFiltrados = data.filter(evento => {
+                const dataEventoInicio = evento.dataInicio; 
+                const dataEventoFim = evento.dataFim; 
+
+                return dataEventoInicio >= dataInicioInput && dataEventoFim <= dataFimInput;
+            });
+
+            console.log('Eventos filtrados:', eventosFiltrados);
+
+            // Verifica se há eventos filtrados
+            if (eventosFiltrados.length > 0) {
+                // Itera sobre cada evento filtrado e faz uma solicitação fetch para cada um
+                eventosFiltrados.forEach((evento, index) => {
+                    // Obtém o ID do evento atual
+                    const eventoID = evento.id;
+
+                    // Envia uma solicitação POST para a rota específica do evento
+                    fetch(`/api/eventosComplemento/${eventoID}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(evento)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // Adicione os campos com valores específicos dentro do objeto eventosFiltrados
+                        eventosFiltrados[index].nomesBrinquedos = data.nomesBrinquedos;
+                        eventosFiltrados[index].nomesFuncionarios = data.nomesFuncionarios;
+                        eventosFiltrados[index].quantidadesBrinquedos = data.quantidadesBrinquedos;
+
+
+                        eventosFiltradosGlobal = eventosFiltrados;
+                        adicionarElementosDeTitulo() 
+                        criarEventoRelatorio(eventosFiltrados);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao enviar solicitação POST para o evento ID ' + eventoID + ':', error);
+                    });
+                });
+            } else {
+                console.log('Nenhum evento filtrado encontrado.');
+                criarMensagemSemRegistros();
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    });
+
+const exportarPdfBtn = document.querySelector('.btns-painel-lateral');
+
+exportarPdfBtn.addEventListener('click', () => {
+
+    // Verifica se eventosFiltradosGlobal está vazio
+    if (eventosFiltradosGlobal.length === 0) {
+        alert("Não ha eventos no intervalo selecionado para gerar um PDF")
+        return;
+    }
+    const dataInicio = document.getElementById('data-inicio').value;
+    const dataFim = document.getElementById('data-fim').value;
+
+    const dadosParaEnvio = {
+        eventosFiltradosGlobal,
+        dataInicio,
+        dataFim
+    };
+    console.log('Data para enviar: ',dadosParaEnvio)
+
+    // Envia os dados para a rota do servidor
+    fetch('/api/gerar-pdf', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify( dadosParaEnvio )
+
+    })
+    .then(response => {
+        if (response.ok) {
+                //Data Atual
+                const dataAtual = new Date();
+                const dia = String(dataAtual.getDate()).padStart(2, '0');
+                const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+                const ano = dataAtual.getFullYear();
+                const horas = String(dataAtual.getHours()).padStart(2, '0');
+                const minutos = String(dataAtual.getMinutes()).padStart(2, '0');
+
+                // Gera o nome do arquivo com a data atual
+                const nomeArquivo = `relatorio-${dia}-${mes}-${ano}.pdf`;
+
+            // Faz o download do arquivo PDF usando a resposta da API
+            response.blob().then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = nomeArquivo;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }, 1000); 
+            });
+        } else {
+            console.error('Erro ao gerar o arquivo PDF');
+        }
+    })
+    .catch(error => {
+        console.error('Erro na solicitação para a API', error);
+    });
+});
+
+});
+</script>

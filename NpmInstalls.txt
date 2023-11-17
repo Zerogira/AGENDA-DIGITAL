@@ -1,0 +1,37 @@
+//Instação completa para executar e desenvolver
+npm install --save sql
+npm install --save sequelize
+npm install --save mysql2
+npm install --save express-handlebars
+npm install --save express
+npm install --save inputmask
+npm install --save jsonwebtoken
+npm install --save express-session
+npm install --save connect-flash
+npm install --save bootstrap@5.3.0
+npm install --save bcryptjs
+npm install --save passport
+npm install --save passport-local
+npm install moment //remover
+npm install date-fns
+npm install node-fetch
+npm install pdfkit --save
+
+
+npm install fullcalendar @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/timegrid
+npm install date-fns
+
+--ainda nao--
+npm install multer
+npm install cookie-parser
+npm i passport-local bcryptjs
+
+
+
+
+
+//Comando para reduzir as dependencias do node_modules, retirando os modulos que nao estãos sendo utilizados.
+npm prune
+
+//Instação dos modulos necessarios apenas para executar o programa.(Nao da pra desenvolver nada)
+npm install --production

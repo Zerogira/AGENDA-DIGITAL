@@ -1,0 +1,246 @@
+<main class="main-cadastro">
+    <div class="container container-perfil">
+            <h1>Perfil</h1>
+            {{#if user}}
+            <div class="perfil">
+                <div class="container-perfil-infos">
+                    <p><strong>ID:</strong> <span id="user-id">{{user.id}}</span></p>
+                    <p><strong>Nome:</strong> <span id="user-nome">{{user.nome}}</span></p>
+                    <p><strong>Usuário:</strong> <span id="user-usuario">{{user.usuario}}</span></p>
+                    <p><strong>Email:</strong> <span id="user-email">{{user.email}}</span></p>
+                    <p><strong>CPF:</strong> <span id="user-cpf">{{user.cpf}}</span></p>
+                    <p><strong>Telefone:</strong> <span id="user-telefone">{{user.telefone}}</span></p>
+                    <p><strong>Endereço:</strong> <span id="user-endereco">{{user.endereco}}, {{user.cep}}, {{user.cidade}}</span></p>
+                    <p><strong>Administrador:</strong> {{#if user.eAdmin}}Sim{{else}}Não{{/if}}</p>
+                </div>
+                <div class="container-btn-perfil">
+                    <div class="btn-perfil">
+                        <button class="btn btn-primary mb-2" id="btn-editar">Editar </button>
+                        <button class="btn mb-2" id="btn-trocar-senha" style="background-color: #02a7c8; color:white">Trocar Senha</button>
+                        <button class="btn btn-danger mb-2">Deletar Usuário</button>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+    </div>
+</main>
+
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarUsuario">
+                    <input type="hidden" id="user-id-hidden" name="user_id" value="{{user.id}}">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" value="{{user.nome}}"  required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label">Usuário:</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" value="{{user.usuario}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF:</label>
+                        <input type="text" class="form-control" id="cpf" name="cpf" value="{{user.cpf}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label">Telefone:</label>
+                        <input type="text" class="form-control" id="telefone" name="telefone" value="{{user.telefone}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço:</label>
+                        <input type="text" class="form-control" id="endereco" name="endereco" value="{{user.endereco}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cep" class="form-label">CEP:</label>
+                        <input type="text" class="form-control" id="cep" name="cep" value="{{user.cep}}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cidade" class="form-label">Cidade:</label>
+                        <input type="text" class="form-control" id="cidade" name="cidade" value="{{user.cidade}}" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalTrocarSenha" tabindex="-1" aria-labelledby="modalTrocarSenhaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTrocarSenhaLabel">Trocar Senha</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formTrocarSenha">
+                    <input type="hidden" id="id-trocar-senha" name="user_id" value="{{user.id}}">
+                    <div class="mb-3">
+                        <label for="nova-senha" class="form-label">Nova Senha:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="nova-senha" name="nova-senha" required>
+                            <button class="btn btn-outline-secondary" type="button" id="mostrar-nova-senha">
+                                <i class="bi bi-eye eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirmar-senha" class="form-label">Confirmar Senha:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="confirmar-senha" name="confirmar-senha" required>
+                            <button class="btn btn-outline-secondary" type="button" id="mostrar-confirmar-senha">
+                                <i class="bi bi-eye eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Trocar Senha</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function(){
+    adicionarMascaraCPF('cpf');
+    adicionarMascaraTelefone('telefone');
+    adicionarMascaraCEP('cep');
+
+    $("#mostrar-nova-senha").click(function() {
+        var senhaInput = $("#nova-senha");
+        var tipo = senhaInput.attr("type");
+        
+        // Alterna entre tipo password e text
+        if (tipo === "password") {
+            senhaInput.attr("type", "text");
+        } else {
+            senhaInput.attr("type", "password");
+        }
+    });
+
+    // Ao clicar no botão mostrar/ocultar confirmar senha
+    $("#mostrar-confirmar-senha").click(function() {
+        var senhaInput = $("#confirmar-senha");
+        var tipo = senhaInput.attr("type");
+        
+        // Alterna entre tipo password e text
+        if (tipo === "password") {
+            senhaInput.attr("type", "text");
+        } else {
+            senhaInput.attr("type", "password");
+        }
+    });
+
+    $("#btn-editar").click(function(){
+        var userId = $("#user-id-hidden").val();
+
+        $("#modalEditarUsuario").modal('show');
+
+        $("#formEditarUsuario").submit(function(event){
+            event.preventDefault();
+
+            var formData = {
+                userId: userId,
+                nome: $("#nome").val(),
+                usuario: $("#usuario").val(),
+                email: $("#email").val(),
+                cpf: $("#cpf").val(),
+                telefone: $("#telefone").val(),
+                endereco: $("#endereco").val(),
+                cep: $("#cep").val(),
+                cidade: $("#cidade").val()
+            };
+
+            console.log('formData: ',formData)
+            $.ajax({
+                type: "POST",
+                url: "/usuarios/usuario/editar",
+                data: formData,
+                success: function(response) {
+                    console.log("Dados enviados com sucesso!");
+                    if (response.success) {
+                        // Se não houver erros, atualize a página
+                        window.location.reload();
+                    } else {
+                        // Se houver erros, mostre uma mensagem de erro
+                        alert("Erro ao enviar dados: " + response.errors.join(", "));
+                    }
+                },
+                error: function(error) {
+                    console.error("Erro ao enviar dados: " + error);
+                }
+            });
+        });
+    });
+
+    $("#btn-trocar-senha").click(function(){
+        $("#modalTrocarSenha").modal('show');
+    });
+
+    $("#formTrocarSenha").submit(function(event){
+        event.preventDefault();
+        var erros = [];
+        var userId = $("#user-id-hidden").val();
+
+        var senha = $("#nova-senha").val();
+        var conf_senha = $("#confirmar-senha").val();
+
+        if (!senha || senha.length < 4) {
+            erros.push({ texto: 'Senha inválida ou muito curta (mínimo de 4 caracteres).' });
+        } else if (senha !== conf_senha) {
+            erros.push({ texto: 'Senhas não conferem.' });
+        }
+
+        if (erros.length > 0) {
+            // Exibir mensagens de erro ao usuário (por exemplo, usando um elemento de DOM para exibir mensagens)
+            console.log('Erros: ', erros);
+            alert("Erro: " + erros.map(erro => erro.texto).join(', '));
+        } else {
+            var formData = {
+                userId: userId,
+                novaSenha: senha
+            }; 
+            $.ajax({
+                type: "POST",
+                url: "/usuarios/trocar-senha",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        alert("Senha alterada com sucesso!");
+                        window.location.href = '/usuarios/logout';
+                    } else {
+                        alert("Erro ao alterar senha: " + response.message);
+                    }
+                },
+                error: function(error) {
+                    console.error("Erro ao enviar solicitação: " + error);
+                }
+            });
+        }
+    });
+
+});
+
+
+
+
+</script>

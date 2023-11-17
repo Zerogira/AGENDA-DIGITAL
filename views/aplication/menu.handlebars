@@ -1,0 +1,272 @@
+<main class="main-calendario">
+        <div class="container-componentes-inicio">
+        <section class="section-calendario">
+        </section>
+
+        <div class="event-list-menu" id="event-list">
+            <div class="title-div-eventos">
+                <i class="far fa-calendar-minus icons"></i> Eventos
+                <input type="hidden" id="diaAtualInput" name="diaAtual" value="">
+            </div>
+            <ul class="list-calendario" id="event-list-ul">
+            
+            </ul>
+        </div>
+
+        <section class="section-inicio">
+            <div class="title-div-eventos">
+                <i class="fas fa-exclamation-triangle icons" style="font-size: 20px;"></i>Avisos
+            </div>
+            <div class="conteudo-agendar">
+                <ul id="lista-avisos" class="lista-conteudo">
+                    {{#each avisos}}
+                        <div class="containerGeral">
+                            <li class="list-group-item aviso">
+                            <div class="titulo-aviso" style="border-right: 1px solid;">
+                                <span>{{this.titulo}}</span>
+                            </div>
+                            <div class="dataPrazo-aviso" style="border-right: 1px solid;">
+                                <span>Criado: {{this.dataRegistro}}</span>
+                            </div>
+                            <div class="dataPrazo-aviso" style="border-right: 1px solid;">
+                                <span>Até: <span class="dataPrazoSpan">{{this.dataPrazo}}</span>
+                            </div>
+                            <div class="menu-icones">
+                                <i class="fas fa-check-square" data-toggle="modal" data-target="#concluirModal"
+                                data-aviso-id="{{this.id}}" data-titulo="{{this.titulo}}" data-descricao="{{this.descricao}}"
+                                style="cursor: pointer;"></i>
+                                <i class="fas fa-edit" data-toggle="modal" data-target="#editarModal" data-aviso-id="{{this.id}}"
+                                data-titulo="{{this.titulo}}" data-descricao="{{this.descricao}}" data-prazo="{{this.dataPrazo}}" style="cursor: pointer;"></i>
+                                <i class="fas fa-trash" data-toggle="modal" data-target="#confirmarExclusaoModal" 
+                                data-aviso-id="{{this.id}}" data-titulo="{{this.titulo}}" data-descricao="{{this.descricao}}" style="cursor: pointer;"></i>
+                            </div>
+                            </li>
+                            <div class="detalhes-conteudo-menu" style="display: none;">
+                                <span>status: <span  style="font-weight: bold;">{{this.statusA}}</span></span>
+                                <span>Descrição: <span  style="font-weight: bold;">{{this.descricao}}</span></span>
+                            </div>
+                        </div>
+                {{/each}}
+                </ul>
+            </div>
+            <div class="botoes-agendar">
+                <button type="button" class="btn-agendar" data-toggle="modal" data-target="#modalAvisos">ADICIONAR</button>
+            </div>
+        </section>
+        </div>
+</main>
+
+<div class="modal fade" id="modalAvisos" tabindex="-1" role="dialog" aria-labelledby="modalAvisosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAvisosLabel">Adicionar um Aviso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="fecharModal('editarModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="avisoForm">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título do Aviso:</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mensagem" class="form-label">Mensagem:</label>
+                        <textarea class="form-control" id="mensagem" name="mensagem" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="prazo" class="form-label">Data de Prazo:</label>
+                        <input type="date" class="form-control" id="prazo" name="prazo" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Criar Aviso</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="concluirModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitulo"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"  onclick="fecharModal('concluirModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescricao"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="botaoConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="modalAvisosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAvisosLabel">Editar Aviso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"  onclick="fecharModal('editarModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editarAvisoForm">
+                    <input type="hidden" id="avisoId" name="avisoId">
+
+                    <div class="mb-3">
+                        <label for="tituloEditar" class="form-label">Título do Aviso:</label>
+                        <input type="text" class="form-control" id="tituloEditar" name="tituloEditar" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mensagemEditar" class="form-label">Mensagem:</label>
+                        <textarea class="form-control" id="mensagemEditar" name="mensagemEditar" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="prazoEditar" class="form-label">Data de Prazo:</label>
+                        <input type="date" class="form-control" id="prazoEditar" name="prazoEditar" required>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="editarAviso()">Salvar Alterações</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmarExclusaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTituloExclusao"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"   onclick="fecharModal('confirmarExclusaoModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescricaoExclusao"></p>
+                <p>Deseja realmente excluir este aviso?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="botaoConfirmarExclusao">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        {{!-- CALENDARIO --}}
+        var today = new Date();
+        var calendarEl = document.querySelector('.section-calendario'); 
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridDay',
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'today' 
+            },
+            slotMinTime: '06:00:00',
+            slotMaxTime: '23:59:00',
+            locale: 'pt-br',
+            eventColor: '#3788d8',
+            eventTextColor: '#fff',
+            slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: false },
+            events: function(info, successCallback, failureCallback) {
+            carregarEventosDoServidor()
+                .then(eventosFormatados => {
+                    successCallback(eventosFormatados);
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar eventos do servidor:', error);
+                    failureCallback(error);
+                });
+            },
+            dateClick: function(info) {
+                var dataClicada = info.date;
+                var dataFormatada = dataClicada.toISOString().split('T')[0];
+                carregarEventosDoDia(dataFormatada);
+            },
+            eventClick: function(info) {
+            carregarEventoParaLista(info.event);
+            },
+            eventMouseEnter: function (info) {
+                info.el.style.cursor = 'pointer'; 
+                info.el.style.borderColor = '#80aaff'; 
+            },
+
+            eventMouseLeave: function (info) {
+                info.el.style.borderColor = ''; 
+            },
+            height: '100%',
+            firstDay: 1,
+            nowIndicator: false,
+            showNonCurrentDates: false,
+            fixedWeekCount: false,
+            defaultDate: today 
+        });
+        calendar.render();
+    });
+
+$(document).ready(function() {
+    const listaAvisos = document.querySelectorAll('.list-group-item.aviso');
+    listaAvisos.forEach(item => {
+        const dataPrazoSpan = item.querySelector('.dataPrazoSpan');
+        const tituloAviso = item.querySelector('.titulo-aviso');
+        aplicarEstiloBorda(dataPrazoSpan.textContent, tituloAviso);
+    });
+    $(".btn-agendar[data-target='#modalAvisos']").click(function() {
+        $("#modalAvisos").modal("show");
+    });
+
+    $("#avisoForm").submit(function(event) {
+        const titulo = $("#titulo").val();
+        const mensagem = $("#mensagem").val();
+        const prazoInput = $("#prazo").val();
+
+        const partesData = prazoInput.split("-");
+        const prazo = new Date(partesData[0], partesData[1] - 1, partesData[2]);
+
+        const prazoFormatado = `${prazo.getFullYear()}-${String(prazo.getMonth() + 1).padStart(2, '0')}-${String(prazo.getDate()).padStart(2, '0')}`;
+
+        const registro = new Date();
+        const registroFormatado = `${registro.getFullYear()}-${String(registro.getMonth() + 1).padStart(2, '0')}-${String(registro.getDate()).padStart(2, '0')}`;
+
+        $.ajax({
+            method: "POST",
+            url: "/aplication/avisos/novo",
+            data: {
+                titulo: titulo,
+                mensagem: mensagem,
+                prazo: prazoFormatado,
+                registro: registroFormatado,
+            },
+            success: function(response) {
+                console.log("Aviso criado com sucesso!");
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error("Erro ao criar aviso:", error);
+            }
+        });
+
+        $("#modalAvisos").modal("hide");
+    });
+});
+
+</script>
+
+
+

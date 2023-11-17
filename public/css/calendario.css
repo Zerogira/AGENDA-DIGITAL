@@ -1,0 +1,141 @@
+.main-calendario {
+    width: 100%;
+    height: 100vh;
+}
+
+.div-calendario {
+    display: flex;
+    flex-direction: row;
+    height: 97%;
+}
+
+.functions-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.custom-button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #3788d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calendar-section {
+    width: 100%;
+    max-height: max-content;
+    margin-right: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    overflow: auto;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+    border-radius: 20px;
+}
+
+.fc-daygrid-day-frame {
+    height: 20px; 
+    width: 20px; 
+}
+
+.fc-daygrid-day-number {
+    color: black;
+    text-decoration: none;
+}
+
+.fc-toolbar-title, .fc-col-header-cell-cushion {
+    font-size: 16px; 
+    font-weight: bold; 
+    color: #333; 
+    text-decoration: none;
+}
+
+.fc-daygrid-day-number {
+    margin-left: auto; 
+}
+
+.fc-daygrid-day-frame {
+    width: 100%;
+}
+
+.event-list {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 7% 93%;
+    justify-content: center;
+    flex-direction: column;
+    width: 400px; 
+    border-left: 1px solid #ccc; 
+    box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    height: 100%;
+}
+
+.title-div-eventos {
+    width: 100%;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 10px 5px;
+    border-bottom: 1px solid rgb(194, 194, 194);
+}
+
+.list-calendario-item {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    align-items: center;
+    padding:5px;
+}
+
+.titulo-evento {
+    border-radius: 3px;
+}
+
+.list-calendario-item span {
+    text-align: left;
+    padding: 5px;
+}
+
+.list-calendario {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    overflow-y: auto; 
+    max-height: 100%;
+    margin: 0;
+}
+
+.icones-acao {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.info-evento {
+    width: 100%;
+    text-align: left;
+    grid-column: span 2;
+    
+    
+}
+
+.info-evento div {
+    font-size: 14px;
+    font-weight: 300;
+    padding: 3px;
+    border-bottom: 1px solid #ccc;
+}

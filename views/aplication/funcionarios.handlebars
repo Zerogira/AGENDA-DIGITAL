@@ -1,0 +1,331 @@
+<div class="grid-container">
+    <div class="col1 func-LE">
+        <div class="title-item">
+            <span>FUNCIONÁRIOS</span>
+            <div class="input-group col-4">
+                <input type="text" class="form-control" id="searchFuncionario" placeholder="Pesquise pelo nome">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" onclick="pesquisarFuncionario()">Pesquisar</button>
+                </div>
+            </div>
+        </div>
+            <ul class="list-group">
+                <li class="list-group-item titulo-funcionario">
+                    <div class="funcionario-nome-titulo" style="border-right: 1px solid;">
+                        <span>NOME</span>
+                    </div>
+                    <div class="funcionario-telefone" style="border-right: 1px solid;">
+                        <span>TELEFONE</span>
+                    </div>
+                    <div class="funcionario-disponibilidade" style="border-right: 1px solid;">
+                        <span>DISPONIBILIDADE</span>
+                    </div>
+                </li>
+            </ul>
+        <div class="func-lista">
+            <div class="container-registros">
+                {{#each funcionarios}}
+                <div class="containerGeral">
+                    <li class="list-group-item funcionario">
+                    <div class="funcionario-nome" style="border-right: 1px solid;">
+                        <span>{{nome}}</span>
+                    </div>
+                    <div class="funcionario-telefone" style="border-right: 1px solid;">
+                        <span>{{telefone}}</span>
+                    </div>
+                    <div class="funcionario-disponibilidade" style="border-right: 1px solid;">
+                        <span>{{disponibilidade}}</span>
+                    </div>
+                    <div class="funcionario-icones">
+                        <div class="detail-container">
+                            <span class="detail" onclick="exibirDetalhes(this)">detalhes</span>
+                        </div>
+                        <i class="fas fa-edit" data-toggle="modal" data-target="#editarModal"
+                        data-funcionario="{{json this}}" style="cursor: pointer;"></i>
+                        <i class="fas fa-trash" data-toggle="modal" data-target="#confirmarExclusaoModal"
+                        data-funcionario="{{json this}}" style="cursor: pointer;"></i>
+                    </div>
+                    </li>
+                    <div class="detalhes-conteudo" style="display: none;">
+                        <span>ID: <span>{{id}}</span></span>
+                        <span>CPF: <span>{{cpf}}</span></span>
+                        <span>Endereço: <span>{{endereco}}</span></span>
+                        <span>CEP: <span>{{cep}}</span></span>
+                        <span>Cidade <span>{{cidade}}</span></span>
+                        <span>Status:  <span>{{status}}</span></span>
+                        <span>Id do Usuario que cadastrou: <span>{{usuarioID}}</span></span>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <section class="func-LD">
+        <a href="#" data-toggle="modal" data-target="#cadastroModal" class="links-painel-lateral"><button class="btn btn-primary btns-painel-lateral">ADICIONAR</button></a>
+    </section>
+</div>
+
+<!-- FUNCIONARIO MORAL PARA CADASTRO -->
+<div class="modal fade" id="cadastroModal" tabindex="-1" role="dialog" aria-labelledby="cadastroModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cadastroModalLabel">Novo Funcionário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/aplication/funcionarios/novo" method="post">
+                    <div class="containerInput-login">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-box-login">
+                                    <label for="nome" class="detailsL">Nome Completo</label>
+                                    <input type="text" class="form-control" id="nome" placeholder="Digite o nome completo..." name="nome" required>
+                                </div>
+                                
+                                <div class="input-box-login">
+                                    <label for="telefone" class="detailsL">Telefone</label>
+                                    <input type="text" class="form-control" id="telefone" placeholder="Digite o telefone..." name="telefone" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="endereco" class="detailsL">Endereço</label>
+                                    <input type="text" class="form-control" id="endereco" placeholder="Digite o endereço..." name="endereco" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="disponibilidade" class="detailsL">Disponibilidade</label>
+                                    <select class="form-control" name="disponibilidade" required>
+                                        <option value="Segunda a Sexta">Segunda a Sexta</option>
+                                        <option value="Apenas sábado e domingo">Apenas sábado e domingo</option>
+                                        <option value="Todos os dias da semana">Todos os dias da semana</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-box-login">
+                                    <label for="cpf" class="detailsL">CPF</label>
+                                    <input type="text" class="form-control" id="cpf" placeholder="Digite o CPF..." name="cpf" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="cep" class="detailsL">CEP</label>
+                                    <input type="text" class="form-control" id="cep" placeholder="Digite o CEP..." name="cep" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="cidade" class="detailsL">Cidade</label>
+                                    <input type="text" class="form-control" id="cidade" placeholder="Digite a cidade..." name="cidade" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="status" class="detailsL">Status</label>
+                                    <select class="form-control" name="status" required>
+                                        <option value="Disponível">Disponível</option>
+                                        <option value="Indisponível">Indisponível</option>
+                                        <option value="Ferias">Ferias</option>
+                                        <option value="Em pausa">Em pausa</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">FECHAR</button>
+                            <button type="submit" class="btn btn-primary">ENVIAR</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{!-- FORMULARIO MODAL PARA EDIÇÃO --}}
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Funcionário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="fecharModal('editarModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/aplication/funcionarios/editar" method="post">
+                    <div class="containerInput-login">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-box-login">
+                                    <label for="nome" class="detailsL">Nome Completo</label>
+                                    <input type="text" class="form-control" id="nome" placeholder="Digite o nome completo..." name="nome" required>
+                                </div>
+                                
+                                <div class="input-box-login">
+                                    <label for="telefone" class="detailsL">Telefone</label>
+                                    <input type="text" class="form-control" id="telefone" placeholder="Digite o telefone..." name="telefone" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="endereco" class="detailsL">Endereço</label>
+                                    <input type="text" class="form-control" id="endereco" placeholder="Digite o endereço..." name="endereco" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="disponibilidade" class="detailsL">Disponibilidade</label>
+                                    <select class="form-control" name="disponibilidade" required>
+                                        <option value="Segunda a Sexta">Segunda a Sexta</option>
+                                        <option value="Apenas sábado e domingo">Apenas sábado e domingo</option>
+                                        <option value="Todos os dias da semana">Todos os dias da semana</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-box-login">
+                                    <label for="cpf" class="detailsL">CPF</label>
+                                    <input type="text" class="form-control" id="cpf" placeholder="Digite o CPF..." name="cpf" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="cep" class="detailsL">CEP</label>
+                                    <input type="text" class="form-control" id="cep" placeholder="Digite o CEP..." name="cep" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="cidade" class="detailsL">Cidade</label>
+                                    <input type="text" class="form-control" id="cidade" placeholder="Digite a cidade..." name="cidade" required>
+                                </div>
+                                <div class="input-box-login">
+                                    <label for="status" class="detailsL">Status</label>
+                                    <select class="form-control" name="status" required>
+                                        <option value="Disponível">Disponível</option>
+                                        <option value="Indisponível">Indisponível</option>
+                                        <option value="Ferias">Ferias</option>
+                                        <option value="Em pausa">Em pausa</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-box-login">
+                            {{#each erros}}
+                            <div class="alert alert-danger">{{texto}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" id="id" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="confirmarExclusaoModal" tabindex="-1" role="dialog"
+    aria-labelledby="confirmarExclusaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmarExclusaoModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" onclick="fecharModal('confirmarExclusaoModal')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir o funcionário <span id="funcionarioNomeExclusao"></span>?</p>
+            </div>
+            <input type="hidden" name="id" id="exclusaoId" value="">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmarExclusaoBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    adicionarMascaraCPF('cpf');
+    adicionarMascaraTelefone('telefone');
+    adicionarMascaraCEP('cep');
+});
+
+
+const editIcons = document.querySelectorAll('.fas.fa-edit');
+const editarModal = document.getElementById('editarModal');
+const modalContent = editarModal.querySelector('.modal-content');
+const nomeInput = editarModal.querySelector('#nome');
+const cpfInput = editarModal.querySelector('#cpf');
+const telefoneInput = editarModal.querySelector('#telefone');
+const enderecoInput = editarModal.querySelector('#endereco');
+const cepInput = editarModal.querySelector('#cep'); 
+const cidadeInput = editarModal.querySelector('#cidade'); 
+const disponibilidadeSelect = editarModal.querySelector('#disponibilidade');
+const statusSelect = editarModal.querySelector('#status'); 
+const funcionarioIdInput = editarModal.querySelector('#id');
+
+editIcons.forEach(icon => {
+    icon.addEventListener('click', function () {
+        const funcionarioData = JSON.parse(this.getAttribute('data-funcionario'));
+
+        funcionarioIdInput.value = funcionarioData.id;
+        nomeInput.value = funcionarioData.nome;
+        cpfInput.value = funcionarioData.cpf;
+        telefoneInput.value = funcionarioData.telefone;
+        enderecoInput.value = funcionarioData.endereco;
+        cepInput.value = funcionarioData.cep; 
+        cidadeInput.value = funcionarioData.cidade; 
+        disponibilidadeSelect.value = JSON.stringify(funcionarioData.disponibilidade);
+        statusSelect.value = funcionarioData.status; 
+
+        $('#editarModal').modal('show');
+    });
+});
+
+const trashIcons = document.querySelectorAll('.fas.fa-trash');
+const confirmarExclusaoModal = document.getElementById('confirmarExclusaoModal');
+const funcionarioNomeExclusao = document.getElementById('funcionarioNomeExclusao');
+const exclusaoIdInput = document.getElementById('exclusaoId');
+
+trashIcons.forEach(icon => {
+    icon.addEventListener('click', function () {
+        const funcionarioData = JSON.parse(this.getAttribute('data-funcionario'));
+        const funcionarioId = funcionarioData.id;
+        const funcionarioNome = funcionarioData.nome;
+
+        exclusaoIdInput.value = funcionarioId;
+        funcionarioNomeExclusao.textContent = funcionarioNome;
+
+        $('#confirmarExclusaoModal').modal('show');
+    });
+});
+
+const confirmarExclusaoBtn = document.getElementById('confirmarExclusaoBtn');
+
+confirmarExclusaoBtn.addEventListener('click', async function () {
+    try {
+        const funcionarioId = exclusaoIdInput.value;
+
+        // Enviar uma solicitação POST para deletar o registro
+        const response = await fetch(`/aplication/excluirfuncionario/${funcionarioId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            console.log('Funcionário excluído com sucesso');
+            location.reload();
+        } else {
+            console.error('Erro ao excluir o funcionário');
+        }
+
+        // Fechar o modal de confirmação
+        $('#confirmarExclusaoModal').modal('hide');
+    } catch (error) {
+        console.error('Erro durante a exclusão:', error);
+    }
+});
+
+</script>

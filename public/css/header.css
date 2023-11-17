@@ -1,0 +1,29 @@
+.sidenav {
+  height: 100%;
+  position: fixed;
+  background-color: #111;
+  overflow-x: hidden;
+  list-style-type: none;
+  padding: 5px 10px;
+  border-radius: 0px;
+  align-items: center;
+}
+
+.sidenav li {
+  background-color: #111;
+  color: white;
+  padding: 15px 8px;
+  text-align: center;
+}
+
+
+.sidenav li a i{
+  color: white;
+  font-size: 28px;
+}
+
+.sidenav li:last-child {
+  margin-top: auto;
+}
+
+
